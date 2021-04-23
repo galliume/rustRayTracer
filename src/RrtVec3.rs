@@ -82,21 +82,11 @@ pub fn mul(u: Vec3, v: Vec3) -> Vec3 {
     }
 }
 
-pub fn mul_by_t(t: f64, u: Vec3) -> Vec3 {
-    return Vec3 {
-        e: [
-            u.e[0] * t,        
-            u.e[1] * t,
-            u.e[2] * t
-        ]
-    }
-}
-
 impl Add for Vec3 {
 
     type Output = Self;
 
-    fn add(self, _vec3: Self) -> Self {
+    fn add(self, _vec3: Vec3) -> Self {
         Self {
             e:[
                 self.e[0] + _vec3.e[0],
@@ -122,16 +112,16 @@ impl Sub for Vec3 {
     }
 }
 
-impl Mul<f64> for Vec3 {
+impl Mul for Vec3 {
 
     type Output = Self;
 
-    fn mul(self, t : f64) -> Self {
+    fn mul(self, t : Vec3) -> Self {
         Self {
             e:[
-                self.e[0] * t,
-                self.e[1] * t,
-                self.e[2] * t
+                self.e[0] * t[0],
+                self.e[1] * t[1],
+                self.e[2] * t[2]
             ]
         }
     }
