@@ -1,6 +1,7 @@
 mod RrtVec3;
 mod RrtColor;
 mod RrtRay;
+mod RrtSphere;
 
 use crate::RrtVec3::Vec3;
 use crate::RrtRay::Ray;
@@ -9,13 +10,13 @@ fn main() {
 
     // Image
     let aspect_ratio : f64 = 16.0 / 9.0;
-    let image_width : i64 = 400;
-    let image_height : i64 = image_width / aspect_ratio as i64;
+    let image_width : i64 = 640;
+    let image_height : i64 = (image_width as f64 / aspect_ratio) as i64;
 
     // Camera
     let viewport_height : f64 = 2.0;
-    let  viewport_width : f64 = aspect_ratio * viewport_height as f64;
-    let  focal_length : f64 = 1.0;
+    let viewport_width : f64 = aspect_ratio * viewport_height as f64;
+    let focal_length : f64 = 1.0;
 
     let  origin : Vec3 = Vec3::new([0.0, 0.0, 0.0]);
     let  horizontal : Vec3 = Vec3::new([viewport_width, 0.0, 0.0]);
@@ -25,7 +26,7 @@ fn main() {
     // Render
 
     println!("P3\n{} {}\n255\n", image_width, image_height);
-
+    
     for j in (0..image_height).rev() {
         
         eprintln!("Scanlines remaining : {}", j);

@@ -1,13 +1,20 @@
 use crate::RrtVec3::Vec3;
 use crate::RrtVec3::unit_vector;
+use crate::RrtSphere::hit_sphere;
 
 pub fn ray_color(ray: Ray) -> Vec3 {
+
+    if hit_sphere(Vec3::new([0.0, 0.0, -1.0]), 0.5, ray) {
+        return Vec3::new([1.0, 0.0, 0.0]);
+    }
+
     let unit_direction : Vec3 = unit_vector(ray.direction());
 
     let t : f64 = 0.5 * (unit_direction.y() + 1.0);
     return Vec3::new([1.0-t, 1.0-t, 1.0-t]) * Vec3::new([1.0, 1.0, 1.0]) + Vec3::new([t, t, t]) * Vec3::new([0.5, 0.7, 1.0]);
 }
 
+#[derive(Debug, Copy, Clone)]
 pub struct Ray {
     orig : Vec3,
     dir: Vec3
