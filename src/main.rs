@@ -1,3 +1,8 @@
+extern crate nalgebra as na;
+
+mod RrtVec3;
+mod RrtColor;
+
 fn main() {
 
     // Image
@@ -7,19 +12,17 @@ fn main() {
 
     // Render
 
-    println!("P3\n {} {}\n255\n", image_width, image_height);
+    println!("P3\n{} {}\n255\n", image_width, image_height);
 
-    for j in (0..image_height-1).rev() {
+    for j in (0..image_height).rev() {
+        
+        eprintln!("Scanlines remaining : {}", j);
+
         for i in 0..image_width {
-            let r = i as f64 / (image_width-1) as f64;
-            let g = j as f64 / (image_height-1) as f64;
-            let b = 0.25;
-
-            let ir = (255.999 * r) as i64;
-            let ig = (255.999 * g) as i64;
-            let ib = (255.999 * b) as i64;
-
-            println!("{} {} {}", ir, ig, ib);
+            let pixel_color : RrtVec3::Vec3 = RrtVec3::Vec3::new([i as f64/ (image_width-1) as f64, j as f64 / (image_height-1) as f64, 0.25]);
+            RrtColor::write_color(pixel_color);
         }
     }
+
+    eprintln!("Done");
 }
