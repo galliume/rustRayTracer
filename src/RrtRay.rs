@@ -1,25 +1,25 @@
 use crate::RrtVec3::Vec3;
 use crate::RrtVec3::unit_vector;
 use crate::RrtSphere::hit_sphere;
+use crate::RrtHittableList::HittableList;
+use crate::RrtHittable::hit_record;
+use crate::RrtWeekend::infinity;
 
-pub fn ray_color(ray: Ray) -> Vec3 {
+pub fn ray_color(ray: Ray, world : HittableList) -> Vec3 {
 
-    let point : Vec3 = Vec3::new([0.0, 0.0, -1.0]);
+    let mut rec : hit_record = hit_record::new();
 
-    let t : f64 = hit_sphere(point, 0.5, ray);
-
-    if 0.0 < t {
-        let n : Vec3 = unit_vector(ray.point_at(t) - point);
-        return Vec3::new([0.5, 0.5, 0.5]) * Vec3::new([n.x() + 1.0, n.y() + 1.0, n.z() +1.0]);
+    if world.hit(ray, 0.0, infinity, rec) {
+        return Vec3::new([0.5, 0.5, 0.5]) * (rec.normal + Vec3::new([1.0, 1.0, 1.0]));
     }
-
+    
     let unit_direction : Vec3 = unit_vector(ray.direction());
-    let t : Vec3 = Vec3::new([0.5, 0.5, 0.5]) * (unit_direction + Vec3::new([0.0, 1.0, 0.0]));
+    let t = Vec3::new([0.5, 0.5, 0.5]) * (unit_direction + Vec3::new([1.0, 1.0, 1.0]));
 
-    return (Vec3::new([1.0, 1.0, 1.0]) - t) * (Vec3::new([1.0, 1.0, 1.0]) + t) * Vec3::new([0.5, 0.7, 1.0]);
+    return (Vec3::new([1.0, 1.0, 1.0]) - t) * Vec3::new([1.0, 1.0, 1.0]) + t * Vec3::new([0.5, 0.7, 1.0]);
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Copy, Clone)]
 pub struct Ray {
     orig : Vec3,
     dir: Vec3
